@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { TabBarIOS, Text, StatusBar, Alert, Vibration } from "react-native";
-import NewsFeed from "./NewsFeed";
-import Search from "./Search";
+import NewsFeedContainer from "../containers/NewsFeedContainer";
+import SearchContainer from "../containers/SearchContainer";
 import * as globalStyles from "../styles/global";
 
 StatusBar.setBarStyle("light-content");
@@ -33,14 +33,14 @@ export default class HomeScreen extends Component {
                     selected={this.state.tab === "newsFeed"}
                     onPress={() => this.setState({ tab: "newsFeed" })}
                 >
-                    <NewsFeed />
+                    <NewsFeedContainer />
                 </TabBarIOS.Item>
                 <TabBarIOS.Item
                     systemIcon={"search"}
                     selected={this.state.tab === "search"}
                     onPress={() => this.setState({ tab: "search" })}
                 >
-                    <Search />
+                    <SearchContainer />
                 </TabBarIOS.Item>
                 <TabBarIOS.Item
                     systemIcon={"bookmarks"}

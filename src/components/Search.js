@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from "prop-types";
 import {
     View,
     TextInput,
     StyleSheet
 } from 'react-native';
 import * as globalStyles from '../styles/global';
+import NewsFeed from "../components/NewsFeed";
 
 export default class Search extends Component {
     constructor(props) {
@@ -13,6 +15,13 @@ export default class Search extends Component {
         this.state = {
             searchText: ''
         };
+
+        this.searchNews = this.searchNews.bind(this);
+    }
+
+    searchNews(text) {
+        this.setState({ searchText: text });
+        this.props.searchNews(text);
     }
 
     render() {
@@ -24,12 +33,22 @@ export default class Search extends Component {
                         placeholderTextColor={globalStyles.MUTED_COLOR}
                         style={styles.input}
                         value={this.state.searchText}
-                        onChangeText={text => this.setState({ searchText: text })}
+                        onChangeText={this.searchNews}
                     />
                 </View>
+                <NewsFeed
+                    news={this.props.filteredNews}
+                    listStyles={{}}
+                    showLoadingSpinner={false}
+                />
             </View>
         )
     }
+}
+
+Search.propTypes = {
+    filteredNews: PropTypes.arrayOf(PropTypes.object),
+    searchNews: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({

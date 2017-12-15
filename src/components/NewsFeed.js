@@ -6,7 +6,9 @@ import {
     View,
     Modal,
     TouchableOpacity,
-    WebView
+    WebView,
+    RefreshControl,
+    ActivityIndicator
 } from "react-native";
 import SmallText from "./SmallText";
 import NewsItem from "./NewsItem";
@@ -20,12 +22,32 @@ export default class NewsFeed extends Component {
         });
         this.state = {
             dataSource: this.ds.cloneWithRows(props.news),
-            modalVisible: false
+            modalVisible: false,
+            initialLoading: true,
+            refreshing: false
         };
 
         this.renderRow = this.renderRow.bind(this);
         this.onModalClose = this.onModalClose.bind(this);
         this.onModalOpen = this.onModalOpen.bind(this);
+        this.refresh = this.refresh.bind(this);
+    }
+
+    componentWillMount() {
+        this.refresh();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(nextProps.news),
+            initialLoading: false
+        });
+    }
+
+    refresh() {
+        if (this.props.loadNews) {
+            this.props.loadNews();
+        }
     }
 
     onModalClose() {
@@ -78,13 +100,29 @@ export default class NewsFeed extends Component {
     }
 
     render() {
-        return (
-            <View style={globalStyles.COMMON_STYLES.pageContainer}>
+        const {
+            listStyles = globalStyles.COMMON_STYLES.pageContainer,
+            showLoadingSpinner
+        } = this.props;
+        const { initialLoading, refreshing, dataSource } = this.state;
+
+        return initialLoading && showLoadingSpinner ? (
+            <View style={[listStyles, styles.loadingContainer]}>
+                <ActivityIndicator animating size="small" {...this.props} />
+            </View>
+        ) : (
+            <View style={styles.container}>
                 <ListView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={this.refresh}
+                        />
+                    }
                     enableEmptySections
-                    dataSource={this.state.dataSource}
+                    dataSource={dataSource}
                     renderRow={this.renderRow}
-                    style={this.props.listStyles}
+                    style={listStyles}
                 />
                 {this.renderModal()}
             </View>
@@ -94,44 +132,23 @@ export default class NewsFeed extends Component {
 
 NewsFeed.propTypes = {
     news: PropTypes.arrayOf(PropTypes.object),
-    listStyles: View.propTypes.style
+    listStyles: View.propTypes.style,
+    loadNews: PropTypes.func,
+    showLoadingSpinner: PropTypes.bool
 };
 
 NewsFeed.defaultProps = {
-    news: [
-        {
-            title: "React Native",
-            imageUrl:
-                "https://c1.staticflickr.com/8/7667/28290983333_00a53f748c_b.jpg",
-            description: "Build Native Mobile Apps using JavaScript and React",
-            date: new Date(),
-            author: "Facebook",
-            location: "Menlo Park, California",
-            url: "https://facebook.github.io/react-native"
-        },
-        {
-            title: "Vue",
-            imageUrl: "https://vuejs.org/images/logo.png",
-            description: "The Progressive Javascript Framework",
-            date: new Date(),
-            author: "Evan You",
-            location: "Jersey City, NJ",
-            url: "https://vuejs.org"
-        },
-        {
-            title: "Angular",
-            imageUrl:
-                "https://angular.io/assets/images/logos/angular/logo-nav@2x.png",
-            description: "One Framework Mobile and Desktop",
-            date: new Date(),
-            author: "Google",
-            location: "Atlanta, GA",
-            url: "https://angular.io"
-        }
-    ]
+    showLoadingSpinner: true
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    loadingContainer: {
+        alignItems: "center",
+        justifyContent: "center"
+    },
     newsItem: {
         marginBottom: 20
     },
