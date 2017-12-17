@@ -25,7 +25,11 @@ export default class NewsItem extends Component {
                 cancelButtonIndex: 1,
                 title: this.props.title
             },
-            buttonIndex => console.log("Button selected", buttonIndex)
+            buttonIndex => {
+                if (buttonIndex === 0) {
+                    this.props.onBookmark();
+                }
+            }
         );
     }
 
@@ -82,7 +86,8 @@ NewsItem.propType = {
     index: PropTypes.number.isRequired,
     onPress: PropTypes.func.isRequired,
     style: View.propTypes.style,
-    onPress: PropTypes.func.isRequired
+    onPress: PropTypes.func.isRequired,
+    onBookmark: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({

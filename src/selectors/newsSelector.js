@@ -4,6 +4,7 @@ import { reshapeNewsData, filterNewsBySearchTerm } from "../util/dataTransformat
 // input selector
 const newsSelector = state => state.news;
 const searchTermSelector = state => state.searchTerm;
+const bookmarksSelector = state => state.bookmarks
 
 // memoized selector
 const resharpeNewsSelector = createSelector(
@@ -24,4 +25,9 @@ const caseInsensitiveSearchTermSelector = createSelector(
 export const searchNewsSelector = createSelector(
     [resharpeNewsSelector, caseInsensitiveSearchTermSelector],
     filterNewsBySearchTerm
+);
+
+export const bookmarkedNewsSelector = createSelector(
+    [allNewsSelector, bookmarksSelector],
+    (news, bookmarks) => news.filter(item => bookmarks.indexOf(item.url) > -1)
 );

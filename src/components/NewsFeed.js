@@ -1,18 +1,22 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import {
+    ActivityIndicator,
+    Linking,
     ListView,
-    StyleSheet,
-    View,
     Modal,
-    TouchableOpacity,
-    WebView,
+    NetInfo,
     RefreshControl,
-    ActivityIndicator
-} from "react-native";
-import SmallText from "./SmallText";
-import NewsItem from "./NewsItem";
-import * as globalStyles from "../styles/global";
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    WebView,
+} from 'react-native';
+
+import * as globalStyles from '../styles/global';
+import AppText from './AppText';
+import NewsItem from './NewsItem';
+import SmallText from './SmallText';
 
 export default class NewsFeed extends Component {
     constructor(props) {
@@ -24,16 +28,24 @@ export default class NewsFeed extends Component {
             dataSource: this.ds.cloneWithRows(props.news),
             modalVisible: false,
             initialLoading: true,
-            refreshing: false
+            refreshing: false,
+            connected: true
         };
 
         this.renderRow = this.renderRow.bind(this);
         this.onModalClose = this.onModalClose.bind(this);
         this.onModalOpen = this.onModalOpen.bind(this);
         this.refresh = this.refresh.bind(this);
+        this.handleConnectivityChange = this.handleConnectivityChange.bind(
+            this
+        );
     }
 
     componentWillMount() {
+        NetInfo.isConnected.addEventListener(
+            "connectionChange",
+            this.handleConnectivityChange
+        );
         this.refresh();
     }
 
@@ -42,6 +54,22 @@ export default class NewsFeed extends Component {
             dataSource: this.state.dataSource.cloneWithRows(nextProps.news),
             initialLoading: false
         });
+    }
+
+    componentWillUnmount() {
+        NetInfo.isConnected.removeEventListener(
+            "connectionChange",
+            this.handleConnectivityChange
+        );
+    }
+
+    handleConnectivityChange(isConnected) {
+        this.setState({
+            connected: isConnected
+        });
+        if (isConnected) {
+            this.refresh();
+        }
     }
 
     refresh() {
@@ -72,12 +100,16 @@ export default class NewsFeed extends Component {
                 onRequestClose={this.onModalClose}
             >
                 <View style={styles.modalContent}>
-                    <TouchableOpacity
-                        onPress={this.onModalClose}
-                        style={styles.closeButton}
-                    >
-                        <SmallText>Close</SmallText>
-                    </TouchableOpacity>
+                    <View style={styles.modalButtons}>
+                        <TouchableOpacity onPress={this.onModalClose}>
+                            <SmallText>Close</SmallText>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => Linking.openURL(this.state.modalUrl)}
+                        >
+                            <SmallText>Open in Browser</SmallText>
+                        </TouchableOpacity>
+                    </View>
                     <WebView
                         scalesPageToFit
                         source={{ uri: this.state.modalUrl }}
@@ -92,6 +124,7 @@ export default class NewsFeed extends Component {
         return (
             <NewsItem
                 onPress={() => this.onModalOpen(rowData.url)}
+                onBookmark={() => this.props.addBookmark(rowData.url)}
                 style={styles.newsItem}
                 index={index}
                 {...rowData}
@@ -104,7 +137,25 @@ export default class NewsFeed extends Component {
             listStyles = globalStyles.COMMON_STYLES.pageContainer,
             showLoadingSpinner
         } = this.props;
-        const { initialLoading, refreshing, dataSource } = this.state;
+        const {
+            initialLoading,
+            refreshing,
+            dataSource,
+            connected
+        } = this.state;
+
+        if (!connected) {
+            return (
+                <View
+                    style={[
+                        globalStyles.COMMON_STYLES.pageContainer,
+                        styles.loadingContainer
+                    ]}
+                >
+                    <AppText>No Connection</AppText>
+                </View>
+            );
+        }
 
         return initialLoading && showLoadingSpinner ? (
             <View style={[listStyles, styles.loadingContainer]}>
@@ -134,7 +185,8 @@ NewsFeed.propTypes = {
     news: PropTypes.arrayOf(PropTypes.object),
     listStyles: View.propTypes.style,
     loadNews: PropTypes.func,
-    showLoadingSpinner: PropTypes.bool
+    showLoadingSpinner: PropTypes.bool,
+    addBookmark: PropTypes.func.isRequired
 };
 
 NewsFeed.defaultProps = {
@@ -162,5 +214,11 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         flexDirection: "row"
+    },
+    modalButtons: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        flexDirection: "row",
+        justifyContent: "space-between"
     }
 });

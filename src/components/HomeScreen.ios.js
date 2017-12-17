@@ -3,6 +3,7 @@ import { TabBarIOS, Text, StatusBar, Alert, Vibration } from "react-native";
 import NewsFeedContainer from "../containers/NewsFeedContainer";
 import SearchContainer from "../containers/SearchContainer";
 import * as globalStyles from "../styles/global";
+import BookmarksContainer from "../containers/BookmarksContainer";
 
 StatusBar.setBarStyle("light-content");
 
@@ -15,14 +16,14 @@ export default class HomeScreen extends Component {
         };
     }
 
-    showBookmarkAlert() {
-        Vibration.vibrate();
-        Alert.alert(
-            "Coming Soon!",
-            "We're hard at work on this feature, check back in the near future.",
-            [{ text: "OK", onPress: () => console.log("User pressed OK") }]
-        );
-    }
+    // showBookmarkAlert() {
+    //     Vibration.vibrate();
+    //     Alert.alert(
+    //         "Coming Soon!",
+    //         "We're hard at work on this feature, check back in the near future.",
+    //         [{ text: "OK", onPress: () => console.log("User pressed OK") }]
+    //     );
+    // }
 
     render() {
         return (
@@ -45,9 +46,10 @@ export default class HomeScreen extends Component {
                 <TabBarIOS.Item
                     systemIcon={"bookmarks"}
                     selected={this.state.tab === "bookmarks"}
-                    onPress={() => this.showBookmarkAlert()}
+                    onPress={() => this.setState({ tab: "bookmarks" })}
+                    // onPress={() => this.showBookmarkAlert()}
                 >
-                    <Text>Bookmarks</Text>
+                    <BookmarksContainer />
                 </TabBarIOS.Item>
             </TabBarIOS>
         );
