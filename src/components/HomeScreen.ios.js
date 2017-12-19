@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { TabBarIOS, Text, StatusBar, Alert, Vibration } from "react-native";
+import { StatusBar, TabBarIOS } from "react-native";
+import Icon from 'react-native-vector-icons/EvilIcons';
+
+import BookmarksContainer from "../containers/BookmarksContainer";
 import NewsFeedContainer from "../containers/NewsFeedContainer";
 import SearchContainer from "../containers/SearchContainer";
-import * as globalStyles from "../styles/global";
-import BookmarksContainer from "../containers/BookmarksContainer";
+import Profile from "../components/Profile";
 
 StatusBar.setBarStyle("light-content");
 
@@ -28,29 +30,39 @@ export default class HomeScreen extends Component {
     render() {
         return (
             <TabBarIOS>
-                <TabBarIOS.Item
-                    badge={3}
-                    systemIcon={"featured"}
+                <Icon.TabBarItemIOS
+                    iconName={"star"}
+                    title={"News"}
                     selected={this.state.tab === "newsFeed"}
                     onPress={() => this.setState({ tab: "newsFeed" })}
                 >
                     <NewsFeedContainer />
-                </TabBarIOS.Item>
-                <TabBarIOS.Item
-                    systemIcon={"search"}
+                </Icon.TabBarItemIOS>
+                <Icon.TabBarItemIOS
+                    iconName={"search"}
+                    title={"Search"}
                     selected={this.state.tab === "search"}
                     onPress={() => this.setState({ tab: "search" })}
                 >
                     <SearchContainer />
-                </TabBarIOS.Item>
-                <TabBarIOS.Item
-                    systemIcon={"bookmarks"}
+                </Icon.TabBarItemIOS>
+                <Icon.TabBarItemIOS
+                    iconName={"paperclip"}
+                    title={"Bookmarks"}
                     selected={this.state.tab === "bookmarks"}
                     onPress={() => this.setState({ tab: "bookmarks" })}
                     // onPress={() => this.showBookmarkAlert()}
                 >
                     <BookmarksContainer />
-                </TabBarIOS.Item>
+                </Icon.TabBarItemIOS>
+                <Icon.TabBarItemIOS
+                    iconName={"user"}
+                    title={"Profile"}
+                    selected={this.state.tab === "profile"}
+                    onPress={() => this.setState({ tab: "profile" })}
+                >
+                    <Profile />
+                </Icon.TabBarItemIOS>
             </TabBarIOS>
         );
     }
