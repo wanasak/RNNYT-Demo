@@ -1,13 +1,13 @@
-import PropTypes from "prop-types";
-import React from "react";
-import { StyleSheet } from "react-native";
-import { addNavigationHelpers, StackNavigator } from "react-navigation";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import PropTypes from 'prop-types';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { addNavigationHelpers, StackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
 
-import HomeScreen from "../components/HomeScreen";
-import IntroScreen from "../components/IntroScreen";
-import * as globalStyles from "../styles/global";
+import HomeScreen from '../components/HomeScreen';
+import IntroScreen from '../components/IntroScreen';
+import Onboarding from '../components/Onboarding';
+import * as globalStyles from '../styles/global';
 
 const styles = StyleSheet.create({
     header: {
@@ -42,6 +42,9 @@ export const AppNavigator = StackNavigator(
             navigationOptions: {
                 headerTitle: "RNNYT"
             }
+        },
+        Onboarding: {
+            screen: Onboarding
         }
     },
     navigationConfig

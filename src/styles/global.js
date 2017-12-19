@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 
+export const LIGHT_OVERLAY_COLOR = '#fff2';
 export const BG_COLOR = "#343336";
 export const BAR_COLOR = "#4e4d52";
 export const TEXT_COLOR = "#e5dbda";

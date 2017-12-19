@@ -1,50 +1,3 @@
-// import React, { Component } from "react";
-// import PropTypes from "prop-types";
-// import {
-//     View,
-//     TouchableOpacity,
-//     StyleSheet,
-//     StatusBar
-// } from "react-native";
-// import Title from "./Title";
-// import AppText from "./AppText";
-// import * as globalStyles from "../styles/global";
-
-// StatusBar.setBarStyle("light-content");
-
-// class IntroScreen extends Component {
-//     render() {
-//         const { navigate } = this.props.navigation;
-//         return (
-//             <View
-//                 style={[
-//                     globalStyles.COMMON_STYLES.pageContainer,
-//                     styles.container
-//                 ]}
-//             >
-//                 <TouchableOpacity onPress={() => navigate("Home")}>
-//                     <Title>React Native News Reader</Title>
-//                     <AppText>Start Reading</AppText>
-//                 </TouchableOpacity>
-//             </View>
-//         );
-//     }
-// }
-
-// // IntroScreen.propTypes = {
-// //     onPress: PropTypes.func.isRequired
-// // };
-
-// const styles = StyleSheet.create({
-//     container: {
-//         marginBottom: 0,
-//         justifyContent: "center",
-//         alignItems: "center"
-//     }
-// });
-
-// export default IntroScreen;
-
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableOpacity, StyleSheet, StatusBar } from "react-native";
@@ -58,7 +11,7 @@ StatusBar.setBarStyle("light-content");
 
 class IntroScreen extends Component {
     render() {
-        const { homeScreen } = this.props;
+        const { homeScreen, onboardingScreen } = this.props;
         return (
             <View
                 style={[
@@ -66,10 +19,12 @@ class IntroScreen extends Component {
                     styles.container
                 ]}
             >
-                <TouchableOpacity onPress={homeScreen}>
-                    <Title>React Native News Reader</Title>
-                    <AppText>Start Reading</AppText>
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity onPress={onboardingScreen}>
+                        <Title>React Native News Reader</Title>
+                        <AppText>Start Reading</AppText>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -88,8 +43,8 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-    homeScreen: () =>
-        dispatch(NavigationActions.navigate({ routeName: "Home" }))
+    onboardingScreen: () =>
+        dispatch(NavigationActions.navigate({ routeName: "Onboarding" }))
 });
 
 export default connect(null, mapDispatchToProps)(IntroScreen);
