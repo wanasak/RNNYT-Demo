@@ -1,15 +1,31 @@
 import React, { Component } from "react";
 import { StatusBar, TabBarIOS } from "react-native";
-import Icon from 'react-native-vector-icons/EvilIcons';
+import Icon from "react-native-vector-icons/EvilIcons";
+import { NavigationActions } from "react-navigation";
+import { HeaderBackButton } from "react-navigation";
+import { connect } from "react-redux";
 
+import Profile from "../components/Profile";
 import BookmarksContainer from "../containers/BookmarksContainer";
 import NewsFeedContainer from "../containers/NewsFeedContainer";
 import SearchContainer from "../containers/SearchContainer";
-import Profile from "../components/Profile";
 
 StatusBar.setBarStyle("light-content");
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
+    static navigationOptions = ({ navigation }) => ({
+        headerLeft: (
+            <HeaderBackButton
+                tintColor="white"
+                title="Back"
+                onPress={() => {
+                    navigation.dispatch(NavigationActions.back());
+                    navigation.dispatch(NavigationActions.back());
+                }}
+            />
+        ),
+    });
+
     constructor(props) {
         super(props);
 
@@ -67,3 +83,10 @@ export default class HomeScreen extends Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+    introScreen: () =>
+        dispatch(NavigationActions.navigate({ routeName: "Intro" }))
+});
+
+export default connect(null, mapDispatchToProps)(HomeScreen);

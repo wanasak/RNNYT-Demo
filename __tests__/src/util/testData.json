@@ -1,0 +1,31 @@
+[
+    {
+        "section": "U.S.",
+        "subsection": "Technology",
+        "title": "React Native Expands to New Platforms",
+        "abstract":
+            "React Native, the framework for building mobile applications with web technologies, is expanding to new platforms",
+        "url": "http://example.com/react-native-expands",
+        "byline": "By JACOB FRIEDMANN",
+        "item_type": "Article",
+        "updated_date": "2016-09-10T11:48:04-04:00",
+        "created_date": "2016-09-10T11:48:03-04:00",
+        "published_date": "2016-09-10T05:00:00-04:00",
+        "material_type_facet": "",
+        "kicker": "",
+        "des_facet": ["React Native", "Mobile Applications"],
+        "org_facet": ["Facebook"],
+        "per_facet": [],
+        "geo_facet": [],
+        "multimedia": [
+            {
+                "url": "https://example.com/image.jpg",
+                "format": "thumbLarge",
+                "height": 150,
+                "width": 150,
+                "type": "image",
+                "subtype": "photo"
+            }
+        ]
+    }
+]

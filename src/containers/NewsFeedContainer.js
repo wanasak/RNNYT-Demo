@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux';
 import { addBookmark } from '../actions/bookmarkActions';
 import { loadNews } from '../actions/newsActions';
 import NewsFeed from '../components/NewsFeed';
-import { allNewsSelector } from '../selectors/newsSelector';
+import { allNewsSelector, bookmarkNewsErrorSelector } from '../selectors/newsSelector';
 
 // import { reshapeNewsData } from '../util/dataTransformations';
 const mapStateToProps = state => ({
-    news: allNewsSelector(state)
+    news: allNewsSelector(state),
+    errorBookmark: bookmarkNewsErrorSelector(state)
 });
 
 const mapDispatchToProps = dispatch =>

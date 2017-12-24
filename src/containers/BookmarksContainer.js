@@ -1,6 +1,11 @@
+import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { loadBookmarks, addBookmark } from "../actions/bookmarkActions";
+import {
+    loadBookmarks,
+    addBookmark,
+    removeBookmark
+} from "../actions/bookmarkActions";
 import NewsFeed from "../components/NewsFeed";
 import { bookmarkedNewsSelector } from "../selectors/newsSelector";
 
@@ -12,9 +17,25 @@ const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
             loadNews: loadBookmarks,
-            addBookmark
+            addBookmark,
+            removeBookmark
         },
         dispatch
     );
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewsFeed);
+const BookmarksContainer = ({
+    news,
+    loadNews,
+    addBookmark,
+    removeBookmark
+}) => (
+    <NewsFeed
+        news={news}
+        loadNews={loadNews}
+        addBookmark={addBookmark}
+        removeBookmark={removeBookmark}
+        isBookmarkContainer={true}
+    />
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookmarksContainer);

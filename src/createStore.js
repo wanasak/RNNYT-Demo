@@ -1,6 +1,7 @@
 import { createLogger } from "redux-logger";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import promiseMiddleware from "redux-promise";
+import thunk from "redux-thunk";
 
 import newsFeedReducer from "./reducers/newsFeedReducer";
 import searchTermReducer from "./reducers/searchTermReducer";
@@ -18,5 +19,5 @@ export default (initialState = {}) =>
             bookmarks: bookmarkReducer
         }),
         initialState,
-        applyMiddleware(logger, promiseMiddleware)
+        applyMiddleware(thunk, logger, promiseMiddleware)
     );

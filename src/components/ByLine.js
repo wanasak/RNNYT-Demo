@@ -7,8 +7,8 @@ import * as globalStyles from "../styles/global";
 const ByLine = ({ date, author, location }) => (
     <View>
         <View style={styles.row}>
-            <SmallText>{date}</SmallText>
-            <SmallText>{author}</SmallText>
+            <SmallText style={styles.location}>{date}</SmallText>
+            <SmallText style={styles.location}>{author}</SmallText>
         </View>
 
         {location ? (

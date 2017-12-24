@@ -29,5 +29,10 @@ export const searchNewsSelector = createSelector(
 
 export const bookmarkedNewsSelector = createSelector(
     [allNewsSelector, bookmarksSelector],
-    (news, bookmarks) => news.filter(item => bookmarks.indexOf(item.url) > -1)
+    (news, bookmarks) => news.filter(item => bookmarks.items.indexOf(item.url) > -1)
+);
+
+export const bookmarkNewsErrorSelector = createSelector(
+    bookmarksSelector,
+    bookmarks => bookmarks.error
 );

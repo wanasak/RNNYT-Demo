@@ -19,15 +19,22 @@ export default class NewsItem extends Component {
     }
 
     onLongPress() {
+        let options = ["Cancel"];
+        this.props.isBookmarkContainer
+            ? options.splice(0, 0, "Remove")
+            : options.splice(0, 0, "Bookmark");
+
         ActionSheetIOS.showActionSheetWithOptions(
             {
-                options: ["Bookmark", "Cancel"],
-                cancelButtonIndex: 1,
+                options: options,
+                cancelButtonIndex: 2,
                 title: this.props.title
             },
             buttonIndex => {
                 if (buttonIndex === 0) {
-                    this.props.onBookmark();
+                    this.props.isBookmarkContainer
+                        ? this.props.onRemoveBookmark()
+                        : this.props.onBookmark();
                 }
             }
         );
@@ -87,7 +94,9 @@ NewsItem.propType = {
     onPress: PropTypes.func.isRequired,
     style: View.propTypes.style,
     onPress: PropTypes.func.isRequired,
-    onBookmark: PropTypes.func.isRequired
+    onBookmark: PropTypes.func.isRequired,
+    onRemoveBookmark: PropTypes.func,
+    isBookmarkContainer: PropTypes.bool
 };
 
 const styles = StyleSheet.create({

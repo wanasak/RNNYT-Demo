@@ -1,8 +1,8 @@
-import { SERACH_NEWS } from "../actions/actionTypes";
+import { SEARCH_NEWS } from "../actions/actionTypes";
 
 export default (state = "", action = {}) => {
     switch (action.type) {
-        case SERACH_NEWS: {
+        case SEARCH_NEWS: {
             return action.payload;
         }
         default:

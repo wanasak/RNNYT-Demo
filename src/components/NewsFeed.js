@@ -11,6 +11,8 @@ import {
     TouchableOpacity,
     View,
     WebView,
+    Alert,
+    Vibration
 } from 'react-native';
 
 import * as globalStyles from '../styles/global';
@@ -39,6 +41,7 @@ export default class NewsFeed extends Component {
         this.handleConnectivityChange = this.handleConnectivityChange.bind(
             this
         );
+        this.showBookmarkAlert = this.showBookmarkAlert.bind(this);
     }
 
     componentWillMount() {
@@ -54,6 +57,9 @@ export default class NewsFeed extends Component {
             dataSource: this.state.dataSource.cloneWithRows(nextProps.news),
             initialLoading: false
         });
+        if (nextProps.errorBookmark) {
+            this.showBookmarkAlert(nextProps.errorBookmark);
+        }
     }
 
     componentWillUnmount() {
@@ -92,6 +98,15 @@ export default class NewsFeed extends Component {
         });
     }
 
+    showBookmarkAlert(msg) {
+        Vibration.vibrate();
+        Alert.alert(
+            "Warning",
+            msg,
+            [{ text: "OK" }]
+        );
+    }
+
     renderModal() {
         return (
             <Modal
@@ -102,12 +117,12 @@ export default class NewsFeed extends Component {
                 <View style={styles.modalContent}>
                     <View style={styles.modalButtons}>
                         <TouchableOpacity onPress={this.onModalClose}>
-                            <SmallText>Close</SmallText>
+                            <SmallText style={styles.modalHeaderText}>Close</SmallText>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => Linking.openURL(this.state.modalUrl)}
                         >
-                            <SmallText>Open in Browser</SmallText>
+                            <SmallText style={styles.modalHeaderText}>Open in Browser</SmallText>
                         </TouchableOpacity>
                     </View>
                     <WebView
@@ -123,8 +138,10 @@ export default class NewsFeed extends Component {
         const index = parseInt(rest[1], 10);
         return (
             <NewsItem
+                isBookmarkContainer={this.props.isBookmarkContainer}
                 onPress={() => this.onModalOpen(rowData.url)}
                 onBookmark={() => this.props.addBookmark(rowData.url)}
+                onRemoveBookmark={() => this.props.removeBookmark(rowData.url)}
                 style={styles.newsItem}
                 index={index}
                 {...rowData}
@@ -183,14 +200,18 @@ export default class NewsFeed extends Component {
 
 NewsFeed.propTypes = {
     news: PropTypes.arrayOf(PropTypes.object),
+    errorBookmark: PropTypes.string,
     listStyles: View.propTypes.style,
     loadNews: PropTypes.func,
     showLoadingSpinner: PropTypes.bool,
-    addBookmark: PropTypes.func.isRequired
+    addBookmark: PropTypes.func.isRequired,
+    removeBookmark: PropTypes.func,
+    isBookmarkContainer: PropTypes.bool
 };
 
 NewsFeed.defaultProps = {
-    showLoadingSpinner: true
+    showLoadingSpinner: true,
+    isBookmarkContainer: false
 };
 
 const styles = StyleSheet.create({
@@ -220,5 +241,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         flexDirection: "row",
         justifyContent: "space-between"
+    },
+    modalHeaderText: {
+        color: "white"
     }
 });

@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-    View,
-    TextInput,
-    StyleSheet
-} from 'react-native';
-import * as globalStyles from '../styles/global';
+import { View, TextInput, StyleSheet } from "react-native";
+import * as globalStyles from "../styles/global";
 import NewsFeed from "../components/NewsFeed";
 
 export default class Search extends Component {
@@ -13,7 +9,7 @@ export default class Search extends Component {
         super(props);
 
         this.state = {
-            searchText: ''
+            searchText: ""
         };
 
         this.searchNews = this.searchNews.bind(this);
@@ -29,27 +25,31 @@ export default class Search extends Component {
             <View style={globalStyles.COMMON_STYLES.pageContainer}>
                 <View style={styles.search}>
                     <TextInput
-                        placeholder={'Search'}
+                        placeholder="Search"
                         placeholderTextColor={globalStyles.MUTED_COLOR}
                         style={styles.input}
                         value={this.state.searchText}
                         onChangeText={this.searchNews}
+                        underlineColorAndroid="transparent"
+                        returnKeyLabel="Search"
+                        keyboardAppearance="light"
                     />
                 </View>
                 <NewsFeed
                     news={this.props.filteredNews}
                     listStyles={{}}
                     showLoadingSpinner={false}
+                    addBookmark={this.props.addBookmark}
                 />
             </View>
-        )
+        );
     }
 }
 
 Search.propTypes = {
     filteredNews: PropTypes.arrayOf(PropTypes.object),
     searchNews: PropTypes.func.isRequired
-}
+};
 
 const styles = StyleSheet.create({
     input: {
@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
     },
     search: {
         borderColor: globalStyles.MUTED_COLOR,
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         borderRadius: 5,
         borderWidth: 1,
         marginTop: 10,
         marginBottom: 5
     }
-})
+});
