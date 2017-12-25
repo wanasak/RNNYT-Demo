@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
     View,
     StyleSheet,
@@ -17,16 +18,20 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { image: null };
-
         this.onPressIcon = this.onPressIcon.bind(this);
+    }
+
+    componentWillMount() {
+        if (this.props.loadProfileImage) {
+            this.props.loadProfileImage();
+        }
     }
 
     onPressIcon() {
         ImagePickerIOS.openSelectDialog(
             {},
             imageUri => {
-                this.setState({ image: imageUri });
+                this.props.saveProfileImage(imageUri);
             },
             error => {
                 console.log(error);
@@ -42,14 +47,14 @@ export default class Profile extends Component {
                     styles.container
                 ]}
             >
-                {this.state.image ? (
+                {this.props.image ? (
                     <View style={{ paddingBottom: 20 }}>
                         <TouchableOpacity
                             onPress={this.onPressIcon}
                         >
                             <Image
                                 style={styles.image}
-                                source={{ uri: this.state.image }}
+                                source={{ uri: this.props.image }}
                             />
                         </TouchableOpacity>
                     </View>
@@ -67,6 +72,12 @@ export default class Profile extends Component {
     }
 }
 
+Profile.proptypes = {
+    image: PropTypes.string,
+    loadProfileImage: PropTypes.func,
+    saveProfileImage: PropTypes.func
+}
+
 const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
@@ -78,6 +89,7 @@ const styles = StyleSheet.create({
     },
     image: {
         width: 150,
-        height: 150
+        height: 150,
+        borderRadius: 150/2,
     }
 });

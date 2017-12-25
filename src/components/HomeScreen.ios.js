@@ -5,7 +5,7 @@ import { NavigationActions } from "react-navigation";
 import { HeaderBackButton } from "react-navigation";
 import { connect } from "react-redux";
 
-import Profile from "../components/Profile";
+import ProfileContainer from "../containers/ProfileContainer";
 import BookmarksContainer from "../containers/BookmarksContainer";
 import NewsFeedContainer from "../containers/NewsFeedContainer";
 import SearchContainer from "../containers/SearchContainer";
@@ -77,7 +77,7 @@ class HomeScreen extends Component {
                     selected={this.state.tab === "profile"}
                     onPress={() => this.setState({ tab: "profile" })}
                 >
-                    <Profile />
+                    <ProfileContainer />
                 </Icon.TabBarItemIOS>
             </TabBarIOS>
         );
