@@ -5,7 +5,8 @@ import {
     StyleSheet,
     ImagePickerIOS,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } from "react-native";
 import Icon from "react-native-vector-icons/EvilIcons";
 
@@ -13,6 +14,8 @@ import Title from "../components/Title";
 import AppText from "../components/AppText";
 
 import * as globalStyles from "../styles/global";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 export default class Profile extends Component {
     constructor(props) {
@@ -88,8 +91,8 @@ const styles = StyleSheet.create({
         fontSize: 200
     },
     image: {
-        width: 150,
-        height: 150,
-        borderRadius: 150/2,
+        width: SCREEN_WIDTH * 0.4,
+        height: SCREEN_WIDTH * 0.4,
+        borderRadius: (SCREEN_WIDTH * 0.4)/2,
     }
 });

@@ -3,9 +3,16 @@ import {
     ADD_BOOKMARK_FAIL,
     LOADED_BOOKMARKS,
     REMOVE_BOOKMARK,
-    ADD_BOOKMARK
+    ADD_BOOKMARK,
+    VIEW_BOOKMARKS
 } from "./actionTypes";
 import { AsyncStorage } from "react-native";
+
+export const viewBookmark = () => {
+    return {
+        type: VIEW_BOOKMARKS
+    };
+}
 
 export const addBookmark = url => async dispatch => {
     dispatch({ type: ADD_BOOKMARK });

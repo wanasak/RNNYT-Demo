@@ -38,6 +38,11 @@ export const bookmarkNewsErrorSelector = createSelector(
     bookmarks => bookmarks.error
 );
 
+export const newBookmarkSelector = createSelector(
+    bookmarksSelector,
+    bookmarks => bookmarks.newItems
+);
+
 export const imageSelector = createSelector(
     profileImageSelector,
     image => image

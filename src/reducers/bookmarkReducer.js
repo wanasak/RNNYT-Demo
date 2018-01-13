@@ -3,11 +3,13 @@ import {
     REMOVE_BOOKMARK,
     ADD_BOOKMARK_SUCCESS,
     ADD_BOOKMARK,
-    ADD_BOOKMARK_FAIL
+    ADD_BOOKMARK_FAIL,
+    VIEW_BOOKMARKS
 } from "../actions/actionTypes";
 
 const initialState = {
     items: [],
+    newItems: 0,
     error: ""
 };
 
@@ -22,6 +24,7 @@ export default (state = initialState, action) => {
         case ADD_BOOKMARK_SUCCESS: {
             return {
                 ...state,
+                newItems: state.newItems + 1,
                 items: [...state.items, action.payload]
             };
         }
@@ -43,6 +46,12 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 error: action.payload
+            };
+        }
+        case VIEW_BOOKMARKS: {
+            return {
+                ...state,
+                newItems: 0
             };
         }
         default:
